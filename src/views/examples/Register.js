@@ -30,16 +30,73 @@ import {
   InputGroupText,
   InputGroup,
   Row,
-  Col
+  Col,
+  Alert
 } from "reactstrap";
 
+import {CustomAxios} from '../../axiosUtils';
+
 class Register extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state={
+      form:{
+        name:'',
+        lastName:'',
+        age:'',
+        email:'',
+        password:''
+      },
+      alert:{
+        status:false,
+        text:''
+      }
+    }
+  }
+
+  onSubmit=async(e)=>{
+    e.preventDefault()
+
+    try {
+      const res= await CustomAxios(process.env.REACT_APP_PUBLIC_URL+'/singup',this.state.form,'post');
+      if(res.data.message){
+        this.setState({
+          alert:{
+            status:true,
+            text:res.data.message
+          }
+        })
+      }else{
+        localStorage.setItem('identity',JSON.stringify(res.data.student));
+        this.props.history.push('/admin')
+      }
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  handleChange=e=>{
+    this.setState({
+        form:{
+            ...this.state.form,
+            [e.target.name]: e.target.value
+        }
+        
+    })
+}
+  
   render() {
     return (
       <>
         <Col lg="6" md="8">
           <Card className="bg-secondary shadow border-0">
             <CardHeader className="bg-transparent pb-5">
+            {this.state.alert.status  ?
+              <Alert color="warning">
+                {this.state.alert.text}
+              </Alert> : ''  
+            }
               <div className="text-muted text-center mt-2 mb-4">
                 <small>Sign up with</small>
               </div>
@@ -86,7 +143,17 @@ class Register extends React.Component {
                         <i className="ni ni-hat-3" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Name" type="text" />
+                    <Input onChange={this.handleChange} name="name" placeholder="Name" type="text"  required/>
+                  </InputGroup>
+                </FormGroup>
+                <FormGroup>
+                  <InputGroup className="input-group-alternative mb-3">
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>
+                        <i className="ni ni-hat-3" />
+                      </InputGroupText>
+                    </InputGroupAddon>
+                    <Input  onChange={this.handleChange} name="lastName" placeholder="last Name" type="text"  required/>
                   </InputGroup>
                 </FormGroup>
                 <FormGroup>
@@ -96,9 +163,20 @@ class Register extends React.Component {
                         <i className="ni ni-email-83" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Email" type="email" autoComplete="new-email"/>
+                    <Input onChange={this.handleChange} name="email" placeholder="Email" type="email" autoComplete="new-email" required/>
                   </InputGroup>
                 </FormGroup>
+                <FormGroup>
+                  <InputGroup className="input-group-alternative mb-3">
+                    <InputGroupAddon addonType="prepend">
+                      <InputGroupText>
+                        <i className="ni ni-hat-3" />
+                      </InputGroupText>
+                    </InputGroupAddon>
+                    <Input onChange={this.handleChange} name="age" placeholder="Age" type="text" required/>
+                  </InputGroup>
+                </FormGroup>
+
                 <FormGroup>
                   <InputGroup className="input-group-alternative">
                     <InputGroupAddon addonType="prepend">
@@ -106,7 +184,7 @@ class Register extends React.Component {
                         <i className="ni ni-lock-circle-open" />
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input placeholder="Password" type="password" autoComplete="new-password"/>
+                    <Input onChange={this.handleChange} name="password" placeholder="Password" type="password" autoComplete="new-password" required/>
                   </InputGroup>
                 </FormGroup>
                 <div className="text-muted font-italic">
@@ -138,7 +216,7 @@ class Register extends React.Component {
                   </Col>
                 </Row>
                 <div className="text-center">
-                  <Button className="mt-4" color="primary" type="button">
+                  <Button onClick={this.onSubmit} className="mt-4" color="primary" type="button">
                     Create account
                   </Button>
                 </div>
