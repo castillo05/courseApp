@@ -97,6 +97,13 @@ class Profile extends React.Component {
 
         if(res){
           console.log(res);
+          this.setState({ 
+            alert:{
+              status:true,
+              text:res.data.message,
+              style:'dark'
+            }
+          })
          
         }else{
 
@@ -181,6 +188,11 @@ class Profile extends React.Component {
             </Col>
             <Col className="order-xl-1" xl="8">
               <Card className="bg-secondary shadow">
+              {this.state.alert.status  ?
+              <Alert color={this.state.alert.style}>
+                {this.state.alert.text}
+              </Alert> : ''  
+            }
                 <CardHeader className="bg-white border-0">
                   <Row className="align-items-center">
                     <Col xs="8">
@@ -276,12 +288,12 @@ class Profile extends React.Component {
               </Card>
             </Col>
           </Row>
-
+{/* 
           {this.state.alert.status  ?
               <Alert color={this.state.alert.style}>
                 {this.state.alert.text}
               </Alert> : ''  
-            }
+            } */}
         <Row>
        
                {this.state.courses.length<=0 ? <div className="col-sm-12 mt-5"><h1 className="text-danger text-center">No tienes cursos</h1></div> 
