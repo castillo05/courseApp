@@ -20,7 +20,42 @@ import React from "react";
 // reactstrap components
 import { Button, Container, Row, Col } from "reactstrap";
 
+import {CustomAxios} from '../../axiosUtils';
+
 class UserHeader extends React.Component {
+
+  constructor(props) {
+    super(props);
+     this.state = {
+       name:'',
+       lastName:'', 
+       email:'',
+       courses:[]
+     }
+  }
+
+  getStudent=async()=>{
+    try {
+      const identity=JSON.parse(localStorage.getItem('identity'));
+      const student = await CustomAxios(process.env.REACT_APP_PUBLIC_URL+'/student/'+identity.id,{},'get')
+
+      console.log(student.data.student.name);
+      this.setState({
+        name:student.data.student.name,
+        lastName: student.data.student.lastName,
+        email: student.data.student.email,
+        courses:student.data.student.courses
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  componentDidMount(){
+    this.getStudent()
+   
+   
+  }
   render() {
     return (
       <>
@@ -40,7 +75,7 @@ class UserHeader extends React.Component {
           <Container className="d-flex align-items-center" fluid>
             <Row>
               <Col lg="7" md="10">
-                <h1 className="display-2 text-white">Hello Jesse</h1>
+                <h1 className="display-2 text-white">{this.state.name}</h1>
                 <p className="text-white mt-0 mb-5">
                   This is your profile page. You can see the progress you've
                   made with your work and manage your projects or assigned tasks

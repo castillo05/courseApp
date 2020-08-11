@@ -49,9 +49,6 @@ class Admin extends React.Component {
 
   }
 
-  componentWillUpdate(){
-    
-  }
 
   getIdentity=()=>{
     validationAuth(this.props.history.push);   
