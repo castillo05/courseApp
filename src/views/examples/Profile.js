@@ -28,7 +28,11 @@ import {
   Input,
   Container,
   Row,
-  Col
+  Col,
+  Alert,
+  CardImg,
+  CardTitle,
+  CardSubtitle
 } from "reactstrap";
 // core components
 import UserHeader from "components/Headers/UserHeader.js";
@@ -47,6 +51,12 @@ class Profile extends React.Component {
         email:'',
         name:'',
         lastName:''
+      },
+      data:null,
+      alert:{
+        status:false,
+        text:'',
+        style:''
       }
     }
   }
@@ -95,8 +105,12 @@ class Profile extends React.Component {
         console.log(error)
       }
   }
+
+  
+
   componentDidMount(){
     this.getStudent()
+   
     
   }
   
@@ -262,6 +276,29 @@ class Profile extends React.Component {
               </Card>
             </Col>
           </Row>
+
+          {this.state.alert.status  ?
+              <Alert color={this.state.alert.style}>
+                {this.state.alert.text}
+              </Alert> : ''  
+            }
+        <Row>
+       
+               {this.state.courses.length<=0 ? <div className="col-sm-12 mt-5"><h1 className="text-danger text-center">No tienes cursos</h1></div> 
+               : this.state.courses.map((course)=>(
+                <Col lg="6" xl="4" key={course.id}>
+                  
+                  <Card className="mt-2">
+                    <CardImg top width="25%" src="https://dev-res.thumbr.io/libraries/25/67/04/lib/1454337646988_1.jpg?size=854x493s&ext=jpg" alt="Card image cap" />
+                    <CardBody>
+                      <CardTitle>{course.name}</CardTitle>
+                      <CardSubtitle>{course.schedule}</CardSubtitle>
+                      <Button onClick={()=>{this.suscribeCourse(course.id)}} className="mt-3 btn-success">Ir a Curso</Button>
+                    </CardBody>
+                  </Card>
+                </Col>
+               ))}
+              </Row>    
         </Container>
       </>
     );
