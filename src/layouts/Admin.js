@@ -26,10 +26,19 @@ import Sidebar from "components/Sidebar/Sidebar.js";
 
 import routes from "routes.js";
 
+import {validationAuth} from '../utils';
+
 class Admin extends React.Component {
-  state = {
-    isLogin: true
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLogin:false
+    }
+
+   
   }
+  
+ 
   componentDidUpdate(e) {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
@@ -40,18 +49,12 @@ class Admin extends React.Component {
 
   }
 
+  componentWillUpdate(){
+    
+  }
+
   getIdentity=()=>{
-    const identity=JSON.stringify(localStorage.getItem('identity'));
-    if(identity!==null){
-      this.setState({
-        isLogin:true
-      })
-    }else if(identity===null){
-      this.setState({
-        isLogin:false
-      })
-    }
-   
+    validationAuth(this.props.history.push);   
   }
   getRoutes = routes => {
     return routes.map((prop, key) => {
@@ -85,10 +88,10 @@ class Admin extends React.Component {
     return (
      
       <Fragment>
-        {this.state.isLogin ? <Redirect
+        {/* {!this.state.isLogin ? <Redirect
                 from="/admin"
                 to="/auth" 
-            /> : ''}
+            /> : null} */}
         <Sidebar
           {...this.props}
           routes={routes}
