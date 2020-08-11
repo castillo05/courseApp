@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React,{Fragment} from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 // reactstrap components
 import { Container } from "reactstrap";
@@ -27,10 +27,31 @@ import Sidebar from "components/Sidebar/Sidebar.js";
 import routes from "routes.js";
 
 class Admin extends React.Component {
+  state = {
+    isLogin: true
+  }
   componentDidUpdate(e) {
     document.documentElement.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
     this.refs.mainContent.scrollTop = 0;
+  }
+  componentDidMount(){
+    this.getIdentity();
+
+  }
+
+  getIdentity=()=>{
+    const identity=JSON.stringify(localStorage.getItem('identity'));
+    if(identity!==null){
+      this.setState({
+        isLogin:true
+      })
+    }else if(identity===null){
+      this.setState({
+        isLogin:false
+      })
+    }
+   
   }
   getRoutes = routes => {
     return routes.map((prop, key) => {
@@ -60,8 +81,14 @@ class Admin extends React.Component {
     return "Brand";
   };
   render() {
+   
     return (
-      <>
+     
+      <Fragment>
+        {this.state.isLogin ? <Redirect
+                from="/admin"
+                to="/auth" 
+            /> : ''}
         <Sidebar
           {...this.props}
           routes={routes}
@@ -84,7 +111,7 @@ class Admin extends React.Component {
             <AdminFooter />
           </Container>
         </div>
-      </>
+        </Fragment>
     );
   }
 }
