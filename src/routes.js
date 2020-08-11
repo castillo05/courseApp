@@ -53,8 +53,8 @@ var routes = [
     layout: "/admin"
   },
   {
-    path: "/tables",
-    name: "Tables",
+    path: "/Crear_Curso",
+    name: "Crear Curso",
     icon: "ni ni-bullet-list-67 text-red",
     component: Tables,
     layout: "/admin"
