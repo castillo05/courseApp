@@ -16,38 +16,33 @@
 
 */
 import React from "react";
-// node.js library that concatenates classes (strings)
-import classnames from "classnames";
+
 // javascipt plugin for creating charts
 import Chart from "chart.js";
-// react plugin used to create charts
-import { Line, Bar } from "react-chartjs-2";
+
+
+
 // reactstrap components
 import {
   Button,
   Card,
-  CardHeader,
   CardBody,
-  NavItem,
-  NavLink,
-  Nav,
-  Progress,
-  Table,
+  
   Container,
   Row,
   Col,
   CardTitle,
   CardImg,
   CardSubtitle,
-  CardText
+  Alert
+ 
 } from "reactstrap";
 
 // core components
 import {
   chartOptions,
-  parseOptions,
-  chartExample1,
-  chartExample2
+  parseOptions
+  
 } from "variables/charts.js";
 
 
@@ -55,13 +50,20 @@ import {CustomAxios} from '../axiosUtils';
 
 import Header from "components/Headers/Header.js";
 
+
+
 class Index extends React.Component {
   constructor(props){
     super(props);
     this.state = {
       activeNav: 1,
       chartExample1Data: "data1",
-      data:[]
+      data:[],
+      alert:{
+        status:false,
+        text:'',
+        style:''
+      }
     };
     if (window.Chart) {
       parseOptions(Chart, chartOptions());
@@ -94,6 +96,47 @@ class Index extends React.Component {
     }
   }
 
+  suscribeCourse=async(id_course)=>{
+   
+    
+    const identity=JSON.parse(localStorage.getItem('identity'));
+
+    let data={
+      id_course:id_course,
+      id_student:identity.id
+    }
+    
+    try {
+      const res= await CustomAxios(process.env.REACT_APP_PUBLIC_URL+'/course-student',data,'post');
+      if(res.data.message){
+        if (res.data.message==='Ya estas suscrito a este curso!') {
+          this.setState({
+            alert:{
+              status:true,
+              text:res.data.message,
+              style:'danger'
+            }
+
+          
+          })
+        }else{
+          this.setState({
+            alert:{
+              status:true,
+              text:res.data.message,
+              style:'success'
+            }
+
+          
+          })
+        }
+       
+    }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   componentDidMount(){
     this.getCourses();
   }
@@ -103,6 +146,11 @@ class Index extends React.Component {
         <Header />
         {/* Page content */}
         <Container className="mt--7" fluid>
+        {this.state.alert.status  ?
+              <Alert color={this.state.alert.style}>
+                {this.state.alert.text}
+              </Alert> : ''  
+            }
         <Row>
                
                {this.state.data.map((course)=>(
@@ -112,7 +160,7 @@ class Index extends React.Component {
                     <CardBody>
                       <CardTitle>{course.name}</CardTitle>
                       <CardSubtitle>{course.schedule}</CardSubtitle>
-                      <Button className="mt-3">Tomar Curso</Button>
+                      <Button onClick={()=>{this.suscribeCourse(course.id)}} className="mt-3 btn-success">Tomar Curso</Button>
                     </CardBody>
                   </Card>
                 </Col>
