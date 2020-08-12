@@ -34,7 +34,8 @@ import {
   CardTitle,
   CardImg,
   CardSubtitle,
-  Alert
+  Alert,
+  UncontrolledTooltip 
  
 } from "reactstrap";
 
@@ -63,7 +64,9 @@ class Index extends React.Component {
         status:false,
         text:'',
         style:''
-      }
+      },
+      confirm:false,
+      id_c:null
     };
     if (window.Chart) {
       parseOptions(Chart, chartOptions());
@@ -137,6 +140,41 @@ class Index extends React.Component {
     }
   }
 
+  confirmDelete=async(id)=>{
+    try {
+
+     
+          const res= await CustomAxios(process.env.REACT_APP_PUBLIC_URL+'/course/'+id,{},'delete');
+         
+          if(res.data.message){
+            
+              this.setState({
+                alert:{
+                  status:true,
+                  text:res.data.message,
+                  style:'danger'
+                }
+                
+              })
+              this.getCourses(); 
+          
+        }
+     
+     
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  deleteCourse=async(id)=>{
+    this.setState({
+      confirm:true,
+      id_c:id
+    })
+   
+  }
+  
+
   componentDidMount(){
     this.getCourses();
   }
@@ -156,6 +194,16 @@ class Index extends React.Component {
                {this.state.data.map((course)=>(
                 <Col lg="6" xl="4" key={course.id}>
                   <Card className="mt-2">
+                  <UncontrolledTooltip placement="right" target="UncontrolledTooltipExample">
+                    Eliminar Curso
+                  </UncontrolledTooltip>
+                  <Button id="UncontrolledTooltipExample" onClick={()=>{this.deleteCourse(course.id)}} className="btn-danger " close />
+                  { this.state.confirm && this.state.id_c===course.id ? 
+                  <Alert color='danger'>
+                    Esta seguro de eliminar el curso?
+                    <Button onClick={()=>{this.confirmDelete(course.id)}} className="btn-warning">Si</Button>
+                    <Button onClick={()=>{this.setState({confirm:false})}} className="btn-dark">No</Button>
+                  </Alert>  : null}
                     <CardImg top width="25%" src="https://dev-res.thumbr.io/libraries/25/67/04/lib/1454337646988_1.jpg?size=854x493s&ext=jpg" alt="Card image cap" />
                     <CardBody>
                       <CardTitle>{course.name}</CardTitle>

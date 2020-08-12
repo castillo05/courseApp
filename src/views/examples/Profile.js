@@ -305,7 +305,7 @@ class Profile extends React.Component {
                     <CardBody>
                       <CardTitle>{course.name}</CardTitle>
                       <CardSubtitle>{course.schedule}</CardSubtitle>
-                      <Button onClick={()=>{this.suscribeCourse(course.id)}} className="mt-3 btn-success">Ir a Curso</Button>
+                      <Button  className="mt-3 btn-success">Ir a Curso</Button>
                     </CardBody>
                   </Card>
                 </Col>
