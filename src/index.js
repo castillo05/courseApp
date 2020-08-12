@@ -25,12 +25,15 @@ import "assets/scss/argon-dashboard-react.scss";
 
 import AdminLayout from "layouts/Admin.js";
 import AuthLayout from "layouts/Auth.js";
+import CourseSuscribe from './views/examples/CourseSuscribe';
+
 
 ReactDOM.render(
   <BrowserRouter>
     <Switch>
       <Route path="/admin" render={props => <AdminLayout {...props} />} />
       <Route path="/auth" render={props => <AuthLayout {...props} />} />
+      <Route path="/admin/curso/:id" component={CourseSuscribe} />
       <Redirect from="/" to="/admin/index" />
     </Switch>
   </BrowserRouter>,

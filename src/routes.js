@@ -21,6 +21,7 @@ import Profile from "views/examples/Profile.js";
 import Register from "views/examples/Register.js";
 import Login from "views/examples/Login.js";
 import Tables from "views/examples/Tables.js";
+import CourseSuscribe from 'views/examples/CourseSuscribe';
 
 var routes = [
   {
@@ -63,6 +64,14 @@ var routes = [
     component: Register,
     layout: "/auth",
     show:'false'
+  },
+  {
+    path: "/curso/:id",
+    name: "Curso",
+    icon: "ni ni-circle-08 text-pink",
+    component: CourseSuscribe,
+    layout: "/admin",
+    show:'true'
   }
 ];
 export default routes;

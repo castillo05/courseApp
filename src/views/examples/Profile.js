@@ -37,6 +37,8 @@ import {
 // core components
 import UserHeader from "components/Headers/UserHeader.js";
 
+import {Link} from 'react-router-dom';
+
 import {CustomAxios} from '../../axiosUtils';
 
 class Profile extends React.Component {
@@ -306,7 +308,7 @@ class Profile extends React.Component {
                     <CardBody>
                       <CardTitle>{course.name}</CardTitle>
                       <CardSubtitle>{course.schedule}</CardSubtitle>
-                      <Button  className="mt-3 btn-success">Ir a Curso</Button>
+                      <Link to={`/admin/curso/${course.id}`}  className="mt-3 btn-success btn">Ir a Curso</Link>
                     </CardBody>
                   </Card>
                 </Col>
