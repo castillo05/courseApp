@@ -37,6 +37,7 @@ class UserHeader extends React.Component {
   getStudent=async()=>{
     try {
       const identity=JSON.parse(localStorage.getItem('identity'));
+      if(!identity) return false;
       const student = await CustomAxios(process.env.REACT_APP_PUBLIC_URL+'/student/'+identity.id,{},'get')
 
       console.log(student.data.student.name);

@@ -72,8 +72,8 @@ class Header extends React.Component {
                               >
                                 {course.name}
                               </CardTitle>
-                              <span className="h2 font-weight-bold mb-0">
-                                {course.numbersStudents}
+                              <span className="h4 font-weight-bold mb-0">
+                                Estudiantes:  {course.numbersStudents}
                               </span>
                             </div>
                             <Col className="col-auto">

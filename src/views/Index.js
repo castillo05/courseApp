@@ -17,8 +17,6 @@
 */
 import React from "react";
 
-// javascipt plugin for creating charts
-import Chart from "chart.js";
 
 
 
@@ -39,12 +37,7 @@ import {
  
 } from "reactstrap";
 
-// core components
-import {
-  chartOptions,
-  parseOptions
-  
-} from "variables/charts.js";
+
 
 
 import {CustomAxios} from '../axiosUtils';
@@ -68,9 +61,7 @@ class Index extends React.Component {
       confirm:false,
       id_c:null
     };
-    if (window.Chart) {
-      parseOptions(Chart, chartOptions());
-    }
+   
   }
   toggleNavs = (e, index) => {
     e.preventDefault();
