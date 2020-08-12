@@ -71,7 +71,7 @@ var routes = [
     icon: "ni ni-circle-08 text-pink",
     component: CourseSuscribe,
     layout: "/admin",
-    show:'true'
+    show:'false'
   }
 ];
 export default routes;
